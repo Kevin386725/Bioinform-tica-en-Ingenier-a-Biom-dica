@@ -14,7 +14,7 @@ st.set_page_config(page_title="Bioinformática en Ingeniería Biomédica",
 
 # Título de la app en Streamlit
 st.title("Bioinformática en Ingeniería Biomédica")
-st.markdown("""
+st.markdown(""" 
 Bienvenido a la aplicación de *Bioinformática* utilizando la biblioteca *Biopython*. 
 Explora diferentes secciones de los archivos PDB y visualiza sus datos de manera interactiva.
 
@@ -24,8 +24,8 @@ Aprovecha esta herramienta para obtener información y visualizaciones sobre est
 # Barra lateral para navegación
 st.sidebar.title("Navegación")
 
-# Caja de texto para ingresar el código de la proteína (PDB ID)
-pdb_code = st.sidebar.text_input("Ingresa el código de la proteína (PDB ID):", )  # Valor por defecto "1ijg"
+# Caja de texto para ingresar el código de la proteína (PDB ID), valor predeterminado "1ijg"
+pdb_code = st.sidebar.text_input("Ingresa el código de la proteína (PDB ID):", "1ijg")
 
 # Función para obtener el archivo PDB desde la URL de RCSB
 def obtener_pdb(pdb_code):
@@ -35,10 +35,10 @@ def obtener_pdb(pdb_code):
     if response.status_code == 200:
         return response.text
     else:
-        st.sidebar.error(f" {pdb_code}")
+        st.sidebar.error(f"No se pudo obtener el PDB para el código: {pdb_code}")
         return None
 
-# Intentar obtener el archivo PDB basado en el código ingresado
+# Intentar obtener el archivo PDB basado en el código ingresado o el valor predeterminado
 pdb_data = obtener_pdb(pdb_code)
 
 # Función para guardar el archivo PDB en un archivo temporal
@@ -89,7 +89,7 @@ def datos_pdb():
         st.write("Primeras filas de la sección ATOM:")
         st.dataframe(df_atom.head(), width=800)
     else:
-        st.warning("")
+        st.warning("No se ha cargado un archivo PDB válido.")
 
 # Función para la sección "Visualización 3D con Plotly"
 def visualizacion_3d_plotly():
@@ -112,7 +112,7 @@ def visualizacion_3d_plotly():
         fig.update_coloraxes(showscale=True)
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.warning("")
+        st.warning("No se ha cargado un archivo PDB válido.")
 
 # Función para la sección "Visualización 3D con Altair"
 def visualizacion_3d_altair():
@@ -135,7 +135,7 @@ def visualizacion_3d_altair():
         )
         st.altair_chart(c, use_container_width=True)
     else:
-        st.warning("")
+        st.warning("No se ha cargado un archivo PDB válido.")
 
 # Función para la sección "Visualización 3D de Proteína (py3Dmol)"
 def visualizacion_3d_proteina():
@@ -153,7 +153,7 @@ def visualizacion_3d_proteina():
         # Mostrar el HTML en Streamlit usando st.components.v1.html
         st.components.v1.html(viewer_html, height=600)
     else:
-        st.warning("")
+        st.warning("No se ha cargado un archivo PDB válido.")
 
 # Mostrar el contenido en la misma pestaña
 st.markdown("---")
